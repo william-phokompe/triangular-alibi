@@ -37,10 +37,10 @@ function timeUNIX(date) {
 }
 
 module.exports.ParseReqHeader = function(request, response) {
-    console.log(request.ip.split(':'));
-    response.json({ 
-        ipaddress: request.ip,
-        language: request.headers['accept-language'],
-        software: request.headers['user-agent']
-    });
+    response.send(request.ip.split(':'));
+    // response.json({ 
+    //     ipaddress: request.ip,
+    //     language: request.headers['accept-language'],
+    //     software: request.headers['user-agent']
+    // });
 }
