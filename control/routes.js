@@ -14,4 +14,10 @@ module.exports = function(app) {
 
     app.route('/api/whoami')
         .get(callBack.ParseReqHeader);
-}
+    
+    app.route('/api/shorturl/new/:url(*)')
+        .post(callBack.ShortenUrl);
+    
+    app.route('/api/shorturl/:id')
+        .get(callBack.findRedirect);
+};

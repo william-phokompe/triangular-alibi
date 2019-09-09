@@ -1,4 +1,8 @@
 'use strict';
+var validUrl = require('valid-url'),
+    mongoose = require('mongoose'),
+    shortid = require('shortid');
+var ShortUrl = mongoose.model('ShortUrl');
 
 module.exports.getFile = function(request, response) {
     response.sendFile(__dirname + '/views/index.htm');
@@ -43,3 +47,31 @@ module.exports.ParseReqHeader = function(request, response) {
         software: request.headers['user-agent']
     });
 }
+
+module.exports.ShortenUrl = function(request, response) {
+
+    var url = request.params.url;
+    if (validUrl.isHttpsUri(url)) {
+
+        ShortUrl.create({ full_url: url, shortid: shortid.generate() }, (error, short_url) => {
+            if (error)
+                response.send(error);
+            response.json({ 
+                original_url: short_url.full_url,
+                short_url: `https://${request.headers['host']}/${short_url.shortid}`
+            });
+        });
+    } else {
+        response.json({ error: "invalid URL" });
+    }
+};
+
+module.exports.findRedirect = function(request, response) {
+    var id = request.params.id;
+
+    ShortUrl.find({ shortid: id }, (error, record) => {
+        if (error)
+            response.send(error);
+        response.redirect(record.full_url);
+    })
+};

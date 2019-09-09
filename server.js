@@ -1,13 +1,30 @@
+require('custom-env').env();
 var express = require('express');
 var app = express();
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8080,
+    bodyParser = require('body-parser'),
+    mongoose = require('mongoose'),
+    Url = require('./model/URL');
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+mongoose.Promise = global.Promise;
+
+mongoose.connect(
+  process.env.URI.toString() + '&' + process.env.MAJORITY.toString(),
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false
+  }
+).then(() => {
+  app.listen(port);
+}).then(_ => {
+  console.log('All is well at : ' + port);
+}).catch((err) => {
+  console.log('DB Connection Error: ' + err);
+});
 
 var routes = require('./control/routes');
 routes(app);
-
-// listen for requests :)
-var listener = app.listen(port, function() {
-  console.log('Your app is listening on port: ' + port);
-});
