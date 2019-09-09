@@ -1,10 +1,12 @@
-require('custom-env').env();
+
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080,
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     Url = require('./model/URL');
+if (process.env.NODE_ENV !== 'production')
+  require('dotenv').load();
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
