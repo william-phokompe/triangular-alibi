@@ -58,7 +58,7 @@ module.exports.ShortenUrl = function(request, response) {
                 response.send(error);
             response.json({ 
                 original_url: short_url.full_url,
-                short_url: `https://${request.headers['host']}/${short_url.shortid}`
+                short_url: `https://${request.headers['host']}/api/shorturl/${short_url.shortid}`
             });
         });
     } else {
