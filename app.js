@@ -7,28 +7,37 @@ module.exports.getFile = function(request, response) {
 module.exports.getTimestamp = function(request, response) {
     var date_string = request.params.date_string;
 
-    if (date_string == undefined)
-        date_string = new Date().toString();
-    var unixTimestamp = timeUNIX(date_string);
-    var utcTimestamp = timeUTC(date_string);
-    var result;
-
-    if (unixTimestamp == NaN)
-        result = { error: "Invalid Date" };
-    else {
-        result = { unix: timeUNIX(date_string), utc: timeUTC(date_string) };
+    if (date_string) {
+        if (!date_string.includes('-'))
+            date_string = parseInt(date_string);
+        date_string = new Date(date_string);
+        if (Object.prototype.toString.call(date_string) === "[object Date]") {
+            // it is a date
+            console.log(date_string);
+            if (isNaN(date_string.getTime())) {  // d.valueOf() could also work
+                // date is not valid
+                response.json({ error: "Invalid Date1" });
+            } else {
+                // date is valid
+                var epoch = timeUNIX(date_string);
+                var standard = date_string.toUTCString();
+                response.json({ unix: epoch, utc: standard });
+            }
+        } else {
+            response.json({ error: "Invalid Date2" });
+        }
+    } else {
+        var date_string = new Date();
+        response.json({ unix: Math.round(date_string.getTime()/1000), utc: date_string.toUTCString() });
     }
-    response.json(result);
 }
 
 function timeUTC(s) {
     if (s.includes('-'))
         return new Date(s).toUTCString();
-    return new Date(s * 1e3).toUTCString();
+    return s.toUTCString();
 }
 
 function timeUNIX(date) {
-    if (date.includes('-'))
-        return Date.parse(date);
-    return date;
+    return typeof date == Float32Array ? Math.round(date.getTime()/1000) : date.getTime();
 }
