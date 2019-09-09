@@ -32,12 +32,14 @@ module.exports.getTimestamp = function(request, response) {
     }
 }
 
-function timeUTC(s) {
-    if (s.includes('-'))
-        return new Date(s).toUTCString();
-    return s.toUTCString();
-}
-
 function timeUNIX(date) {
     return typeof date == Float32Array ? Math.round(date.getTime()/1000) : date.getTime();
+}
+
+module.exports.ParseReqHeader = function(request, response) {
+    response.json({ 
+        ipaddress: request.ip,
+        language: request.headers['accept-language'],
+        software: request.headers['user-agent']
+    });
 }

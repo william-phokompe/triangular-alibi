@@ -11,4 +11,7 @@ module.exports = function(app) {
     
     app.route('/api/timestamp/')
         .get(callBack.getTimestamp);
+
+    app.route('/api/whoami')
+        .get(callBack.ParseReqHeader);
 }
