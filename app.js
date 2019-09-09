@@ -68,7 +68,6 @@ module.exports.ShortenUrl = function(request, response) {
 
 module.exports.findRedirect = function(request, response) {
     var id = request.params.id;
-    console.log(id);
 
     ShortUrl.findOne({ shortid: id }, (error, record) => {
         if (error)
