@@ -6,7 +6,7 @@ var port = process.env.PORT || 8080,
     mongoose = require('mongoose'),
     Url = require('./model/URL');
 if (process.env.NODE_ENV !== 'production')
-  require('dotenv').load();
+  require('dotenv').config();
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
