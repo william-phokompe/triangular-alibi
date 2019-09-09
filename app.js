@@ -75,3 +75,11 @@ module.exports.findRedirect = function(request, response) {
         response.redirect(record.full_url);
     })
 };
+
+module.exports.findAllUrls = function(request, response) {
+    ShortUrl.find({}, (error, records) => {
+        if (error)
+            response.send(error);
+        response.json(records);
+    });
+}

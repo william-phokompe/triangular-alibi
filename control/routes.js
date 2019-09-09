@@ -5,6 +5,8 @@ module.exports = function(app) {
     // http://expressjs.com/en/starter/basic-routing.html
     app.route('/')
         .get(callBack.getFile);
+    app.route('/api/allShortUrls')
+       .get(callBack.findAllUrls);
 
     app.route('/api/timestamp/:date_string')
         .get(callBack.getTimestamp);
