@@ -8,4 +8,7 @@ module.exports = function(app) {
 
     app.route('/api/timestamp/:date_string')
         .get(callBack.getTimestamp);
+    
+    app.route('/api/timestamp/')
+        .get(callBack.getTimestamp);
 }

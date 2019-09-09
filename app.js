@@ -12,8 +12,7 @@ module.exports.getTimestamp = function(request, response) {
     var unixTimestamp = timeUNIX(date_string);
     var utcTimestamp = timeUTC(date_string);
     var result;
-    console.log(typeof(unixTimestamp));
-    console.log(unixTimestamp);
+
     if (unixTimestamp == NaN)
         result = { error: "Invalid Date" };
     else {
