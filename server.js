@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 mongoose.Promise = global.Promise;
 
 mongoose.connect(
-  process.env.URI.toString() + '&' + process.env.MAJORITY.toString(),
+  `${process.env.URI.toString()}&w=majority`,
   {
     useNewUrlParser: true,
     useFindAndModify: false
